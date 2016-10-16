@@ -11,7 +11,7 @@ import csv
 
 ALG_TYPE = "SVM"
 SVM_C = 1.0
-SVM_KERNEL = 'rbf'
+SVM_KERNEL = 'linear'
 SVM_GAMMA = 'auto'
 
 #ALG_TYPE = "DecisionTree"
@@ -19,8 +19,8 @@ SVM_GAMMA = 'auto'
 #ALG_TYPE = "AdaBoost"
 
 PARAM = "C"
-PARAM_MIN = 10000
-PARAM_MAX = 10**20
+PARAM_MIN = 0.001
+PARAM_MAX = 10**16
 def PARAM_CHANGE( x, n ):
 	return x * 10**n
 
