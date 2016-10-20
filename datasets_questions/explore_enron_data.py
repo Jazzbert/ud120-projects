@@ -19,4 +19,12 @@ import pickle
 
 enron_data = pickle.load(open("../final_project/final_project_dataset.pkl", "r"))
 
+count = 0
+total = 0
+for d, v in enron_data.items():
+    total += 1
+    if v['poi'] == True:
+        count += 1
 
+print count
+print total
