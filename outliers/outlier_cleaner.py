@@ -30,15 +30,9 @@ def outlierCleaner(predictions, ages, net_worths):
         cleaned_data.append((ages[x], net_worths[x], errorVal))
 
         # keep track of the 10 largest error values
-        print errorVal, bigError[0]
         if errorVal >= bigError[0]:
             bigError[0] = errorVal
-            print "starting sort"
-            try:
-                bigError = sorted(bigError)
-            except:
-                print "sort failed: ", sys.exec_info()[0]
-            print "completed sort"
+            bigError = sorted(bigError)
 
     print bigError
 
