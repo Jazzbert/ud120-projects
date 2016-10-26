@@ -41,7 +41,7 @@ lfw_people = fetch_lfw_people(min_faces_per_person=70, resize=0.4)
 
 # introspect the images arrays to find the shapes (for plotting)
 n_samples, h, w = lfw_people.images.shape
-np.random.seed(42)
+np.random.seed(42) 
 
 # for machine learning we use the data directly (as relative pixel
 # position info is ignored by this model)
@@ -66,7 +66,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 ###############################################################################
 # Compute a PCA (eigenfaces) on the face dataset (treated as unlabeled
 # dataset): unsupervised feature extraction / dimensionality reduction
-n_components = 150
+n_components = 250 #originally 150
 
 print "Extracting the top %d eigenfaces from %d faces" % (n_components, X_train.shape[0])
 t0 = time()
@@ -144,3 +144,6 @@ eigenface_titles = ["eigenface %d" % i for i in range(eigenfaces.shape[0])]
 plot_gallery(eigenfaces, eigenface_titles, h, w)
 
 pl.show()
+
+### Quiz code
+#print pca.explained_variance_ratio_
