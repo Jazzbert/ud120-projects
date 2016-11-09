@@ -8,7 +8,7 @@ sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
 from tester import dump_classifier_and_data
 
-full_list = ["salary", "to_messages", "deferral_payments", "total_payments", "loan_advances", "bonus", "email_adddress", "restricted_stock_deferred", "deferred_income", "total_stock_value", "expenses", "from_poi_to_this_person", "exercised_stock_options", "from_messages", "other", "from_this_person_to_poi", "poi", "long_term_incentive", "shared_receipt_with_poi", "restricted_stock", "director_fees"]
+full_list = ["salary", "to_messages", "deferral_payments", "total_payments", "loan_advances", "bonus", "restricted_stock_deferred", "deferred_income", "total_stock_value", "expenses", "from_poi_to_this_person", "exercised_stock_options", "from_messages", "other", "from_this_person_to_poi", "poi", "long_term_incentive", "shared_receipt_with_poi", "restricted_stock", "director_fees"]
 
 for feat in full_list:
     
@@ -30,10 +30,5 @@ for feat in full_list:
     data = featureFormat(my_dataset, features_list, sort_keys = True)
     labels, features = targetFeatureSplit(data)
 
-    nan_count = 0
-    
-    for x in features:
-        if x == "NaN":
-            nan_count += 1
 
-    print feat, (len(features) - nan_count) / len(features)
+    print feat, "values:", len(features), " percent:", float(len(features))/float(len(my_dataset))
