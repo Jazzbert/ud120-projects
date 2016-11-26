@@ -47,24 +47,15 @@ data = featureFormat(my_dataset, features_list, sort_keys = True)
 labels, features = targetFeatureSplit(data)
 
 ### Code for visualizeing and looking a different data characteristics
-##biggest = 0
-##
-##import matplotlib.pyplot
-##for point in data:
-##    salary = point[1]
-##    total_payments = point[2]
-##    matplotlib.pyplot.scatter(salary, total_payments)
-##    vector = salary + total_payments
-##    if vector > biggest:
-##        biggest = vector
-##        biggestPayment = point[1]
-##        biggestExercise = point[2]
-##
-##print biggestPayment, biggestExercise
-##
-##matplotlib.pyplot.xlabel("salary")
-##matplotlib.pyplot.ylabel("options_exericised")
-##matplotlib.pyplot.show()
+import matplotlib.pyplot
+for point in data:
+    x = point[0]
+    y = point[1]
+    matplotlib.pyplot.scatter(x, y)
+
+matplotlib.pyplot.xlabel("poi")
+matplotlib.pyplot.ylabel("total_payments")
+matplotlib.pyplot.show()
 
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
