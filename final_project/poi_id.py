@@ -10,8 +10,7 @@ from tester import dump_classifier_and_data
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
-features_list = ['poi', 'total_payments'] #'total_payments', 'exercised_stock_options', \
-                 #'deferred_income', 'deferral_payments']
+features_list = ['poi', 'total_payments', 'net_early_out']
 
 ### Load the dictionary containing the dataset
 with open("final_project_dataset.pkl", "r") as data_file:
@@ -24,9 +23,29 @@ data_dict.pop("TOTAL",0)
 ### Store to my_dataset for easy export below.
 my_dataset = data_dict
 
-## TODO: cycle through data set to add new feature net_personal_inflow
+### CC - Create new feature for total early papments =
+###      deferral_payments + exercised_stock_options
+new_feature = "net_early_out"
+for person in my_dataset:
+    if my_dataset[person]['deferral_payments'] == "NaN":
+        my_def_payment = 0
+    else:
+        my_def_payment = my_dataset[person]['deferral_payments']
 
-### Show base metrics on each feature
+    if my_dataset[person]['exercised_stock_options'] == "NaN":
+        my_exer_opt = 0
+    else:
+        my_exer_opt = my_dataset[person]['exercised_stock_options']
+
+    if my_dataset[person]['loan_advances'] == "NaN":
+        my_loan_adv = 0
+    else:
+        my_loan_adv = my_dataset[person]['loan_advances']
+
+    my_dataset[person][new_feature] = my_def_payment + my_exer_opt + my_loan_adv
+
+
+### CC - Show base metrics on each feature
 ##full_list = ["salary", "to_messages", "deferral_payments", "total_payments", "loan_advances", "bonus", "restricted_stock_deferred", "deferred_income", "total_stock_value", "expenses", "from_poi_to_this_person", "exercised_stock_options", "from_messages", "other", "from_this_person_to_poi", "poi", "long_term_incentive", "shared_receipt_with_poi", "restricted_stock", "director_fees"]
 ##for feat in full_list:
 ##    feat_test = ['poi', feat]
@@ -56,7 +75,7 @@ for point in data:
 
 matplotlib.pyplot.xlabel("poi")
 matplotlib.pyplot.ylabel("total_payments")
-matplotlib.pyplot.show()
+#matplotlib.pyplot.show()
 
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
@@ -66,7 +85,7 @@ matplotlib.pyplot.show()
 
 # Provided to give you a starting point. Try a variety of classifiers.
 from sklearn import tree
-clf = tree.DecisionTreeClassifier()
+clf = tree.DecisionTreeClassifier(min_samples_leaf = 4)
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall
 ### using our testing script. Check the tester.py script in the final project
@@ -93,6 +112,6 @@ dump_classifier_and_data(clf, my_dataset, features_list)
 
 
 ### TODO: Cleanup this test code later on:
-### Test code to run metrics each time
+### CC - Test code to run metrics each time
 from tester import test_classifier
 test_classifier(clf, my_dataset, features_list)
