@@ -48,15 +48,15 @@ labels, features = targetFeatureSplit(data)
 
 ### Code for visualizeing and looking a different data characteristics
 
-import matplotlib.pyplot
-for point in data:
-    x = point[0]
-    y = point[1]
-    matplotlib.pyplot.scatter(x, y)
-
-matplotlib.pyplot.xlabel("poi")
-matplotlib.pyplot.ylabel("total_payments")
-matplotlib.pyplot.show()
+# import matplotlib.pyplot
+# for point in data:
+#     x = point[0]
+#     y = point[1]
+#     matplotlib.pyplot.scatter(x, y)
+#
+# matplotlib.pyplot.xlabel("poi")
+# matplotlib.pyplot.ylabel("total_payments")
+# matplotlib.pyplot.show()
 
 ### Task 4: Try a varity of classifiers
 ### Please name your classifier clf for easy export below.
@@ -79,6 +79,12 @@ clf = tree.DecisionTreeClassifier()
 from sklearn.cross_validation import train_test_split
 features_train, features_test, labels_train, labels_test = \
     train_test_split(features, labels, test_size=0.3, random_state=42)
+
+weight = {'total_payments' : 1, \
+          'exercised_stock_options' : 1, \
+          'deferred_income' : 1, \
+          'deferral_payments' : 1}
+clf.set_params(class_weight = "balanced")
 
 clf = clf.fit(features_train, labels_train)
 scr = clf.score(features_test, labels_test)
