@@ -10,7 +10,7 @@ from tester import dump_classifier_and_data
 ### Task 1: Select what features you'll use.
 ### features_list is a list of strings, each of which is a feature name.
 ### The first feature must be "poi".
-features_list = ['poi', 'total_payments', 'net_early_out']
+features_list = ['poi', 'total_payments', 'net_early_out', 'deferred_income']
 
 ### Load the dictionary containing the dataset
 with open("final_project_dataset.pkl", "r") as data_file:
@@ -86,6 +86,10 @@ matplotlib.pyplot.ylabel("total_payments")
 # Provided to give you a starting point. Try a variety of classifiers.
 from sklearn import tree
 clf = tree.DecisionTreeClassifier(min_samples_leaf = 4)
+#from sklearn.naive_bayes import GaussianNB
+#clf = GaussianNB()
+#from sklearn.ensemble import AdaBoostClassifier
+#clf = AdaBoostClassifier()
 
 ### Task 5: Tune your classifier to achieve better than .3 precision and recall
 ### using our testing script. Check the tester.py script in the final project
@@ -97,11 +101,45 @@ clf = tree.DecisionTreeClassifier(min_samples_leaf = 4)
 # Example starting point. Try investigating other evaluation techniques!
 from sklearn.cross_validation import train_test_split
 features_train, features_test, labels_train, labels_test = \
-    train_test_split(features, labels, test_size=0.3, random_state=42)
+    train_test_split(features, labels, test_size=0.3) #random_state=42
 
 clf = clf.fit(features_train, labels_train)
-scr = clf.score(features_test, labels_test)
-print scr
+
+### copied from tester.py
+true_negatives = 0
+false_negatives = 0
+true_positives = 0
+false_positives = 0
+predictions = clf.predict(features_test)
+for prediction, truth in zip(predictions, labels_test):
+    if prediction == 0 and truth == 0:
+        true_negatives += 1
+    elif prediction == 0 and truth == 1:
+        false_negatives += 1
+    elif prediction == 1 and truth == 0:
+        false_positives += 1
+    elif prediction == 1 and truth == 1:
+        true_positives += 1
+    else:
+        print "Warning: Found a predicted label not == 0 or 1."
+        print "All predictions should take value 0 or 1."
+        print "Evaluating performance for processed predictions:"
+        break
+try:
+    total_predictions = true_negatives + false_negatives + false_positives + true_positives
+    accuracy = 1.0*(true_positives + true_negatives)/total_predictions
+    precision = 1.0*true_positives/(true_positives+false_positives)
+    recall = 1.0*true_positives/(true_positives+false_negatives)
+    scr = clf.score(features_test, labels_test)
+    print "Score: ", scr
+    print "Accuracy: ", accuracy
+    print "Precision: ", precision
+    print "Recall: ", recall
+except:
+    print "Got a divide by zero when trying out:", clf
+    print "Precision or recall may be undefined due to a lack of true positive predicitons."
+
+
 
 ### Task 6: Dump your classifier, dataset, and features_list so anyone can
 ### check your results. You do not need to change anything below, but make sure
@@ -109,9 +147,3 @@ print scr
 ### generates the necessary .pkl files for validating your results.
 
 dump_classifier_and_data(clf, my_dataset, features_list)
-
-
-### TODO: Cleanup this test code later on:
-### CC - Test code to run metrics each time
-from tester import test_classifier
-test_classifier(clf, my_dataset, features_list)
